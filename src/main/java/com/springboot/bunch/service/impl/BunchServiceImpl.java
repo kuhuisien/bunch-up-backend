@@ -6,6 +6,9 @@ import com.springboot.bunch.repository.BunchRepository;
 import com.springboot.bunch.service.BunchService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class BunchServiceImpl implements BunchService {
     private BunchRepository bunchRepository;
@@ -21,6 +24,12 @@ public class BunchServiceImpl implements BunchService {
         Bunch createdBunch = bunchRepository.save(bunch);
 
         return  mapEntityToDto(createdBunch);
+    }
+
+    @Override
+    public List<BunchDto> getAllPosts() {
+        List<Bunch> bunches = bunchRepository.findAll();
+        return bunches.stream().map(bunch -> mapEntityToDto(bunch)).collect(Collectors.toList());
     }
 
     private BunchDto mapEntityToDto(Bunch bunch) {
