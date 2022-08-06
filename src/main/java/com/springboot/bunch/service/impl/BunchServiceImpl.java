@@ -5,6 +5,9 @@ import com.springboot.bunch.exception.ResourceNotFoundException;
 import com.springboot.bunch.payload.BunchDto;
 import com.springboot.bunch.repository.BunchRepository;
 import com.springboot.bunch.service.BunchService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,9 +31,14 @@ public class BunchServiceImpl implements BunchService {
     }
 
     @Override
-    public List<BunchDto> getAllPosts() {
-        List<Bunch> bunches = bunchRepository.findAll();
-        return bunches.stream().map(bunch -> mapEntityToDto(bunch)).collect(Collectors.toList());
+    public List<BunchDto> getAllPosts(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<Bunch> bunches = bunchRepository.findAll(pageable);
+
+        List<Bunch> listOfBunches = bunches.getContent();
+
+        return listOfBunches.stream().map(bunch -> mapEntityToDto(bunch)).collect(Collectors.toList());
     }
 
     @Override

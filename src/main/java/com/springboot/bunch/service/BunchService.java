@@ -7,7 +7,7 @@ import java.util.List;
 public interface BunchService {
     BunchDto createBunch(BunchDto bunchDto);
 
-    List<BunchDto> getAllPosts();
+    List<BunchDto> getAllPosts(int pageNo, int pageSize);
 
     BunchDto getBunchById(long id);
 }

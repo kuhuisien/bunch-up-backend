@@ -24,8 +24,11 @@ public class BunchController {
     }
 
     @GetMapping
-    public List<BunchDto> getAllBunches() {
-        return  bunchService.getAllPosts();
+    public List<BunchDto> getAllBunches(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    ) {
+        return  bunchService.getAllPosts(pageNo, pageSize);
     }
 
     @GetMapping("/{id}")
