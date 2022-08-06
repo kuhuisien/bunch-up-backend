@@ -1,6 +1,7 @@
 package com.springboot.bunch.service.impl;
 
 import com.springboot.bunch.entity.Bunch;
+import com.springboot.bunch.exception.ResourceNotFoundException;
 import com.springboot.bunch.payload.BunchDto;
 import com.springboot.bunch.repository.BunchRepository;
 import com.springboot.bunch.service.BunchService;
@@ -30,6 +31,12 @@ public class BunchServiceImpl implements BunchService {
     public List<BunchDto> getAllPosts() {
         List<Bunch> bunches = bunchRepository.findAll();
         return bunches.stream().map(bunch -> mapEntityToDto(bunch)).collect(Collectors.toList());
+    }
+
+    @Override
+    public BunchDto getBunchById(long id) {
+        Bunch bunch = bunchRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Bunch", "id", id));
+        return mapEntityToDto(bunch);
     }
 
     private BunchDto mapEntityToDto(Bunch bunch) {

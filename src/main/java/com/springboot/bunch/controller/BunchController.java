@@ -27,4 +27,9 @@ public class BunchController {
     public List<BunchDto> getAllBunches() {
         return  bunchService.getAllPosts();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BunchDto> getBunchById(@PathVariable(name = "id") long id) {
+        return ResponseEntity.ok(bunchService.getBunchById(id));
+    }
 }

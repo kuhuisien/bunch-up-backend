@@ -8,4 +8,6 @@ public interface BunchService {
     BunchDto createBunch(BunchDto bunchDto);
 
     List<BunchDto> getAllPosts();
+
+    BunchDto getBunchById(long id);
 }
