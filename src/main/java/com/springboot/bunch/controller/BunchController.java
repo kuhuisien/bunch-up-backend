@@ -28,9 +28,10 @@ public class BunchController {
     public BunchResponse getAllBunches(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "des", required = false) String sortDir
     ) {
-        return  bunchService.getAllPosts(pageNo, pageSize, sortBy);
+        return  bunchService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
     }
 
     @GetMapping("/{id}")

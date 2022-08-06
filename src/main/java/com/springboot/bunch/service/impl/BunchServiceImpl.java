@@ -33,8 +33,11 @@ public class BunchServiceImpl implements BunchService {
     }
 
     @Override
-    public BunchResponse getAllPosts(int pageNo, int pageSize, String sortBy) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+    public BunchResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
         Page<Bunch> bunches = bunchRepository.findAll(pageable);
 
