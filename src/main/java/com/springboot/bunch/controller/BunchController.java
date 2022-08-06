@@ -3,6 +3,7 @@ package com.springboot.bunch.controller;
 import com.springboot.bunch.payload.BunchDto;
 import com.springboot.bunch.payload.BunchResponse;
 import com.springboot.bunch.service.BunchService;
+import com.springboot.bunch.utils.AppConstant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +27,10 @@ public class BunchController {
 
     @GetMapping
     public BunchResponse getAllBunches(
-            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "des", required = false) String sortDir
+            @RequestParam(value = "pageNo", defaultValue = AppConstant.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstant.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstant.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstant.DEFAULT_SORT_DIRECTION, required = false) String sortDir
     ) {
         return  bunchService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
     }
