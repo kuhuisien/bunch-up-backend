@@ -7,7 +7,7 @@ import com.springboot.bunch.payload.BunchResponse;
 public interface BunchService {
     BunchDto createBunch(BunchDto bunchDto);
 
-    BunchResponse getAllPosts(int pageNo, int pageSize);
+    BunchResponse getAllPosts(int pageNo, int pageSize, String sortBy);
 
     BunchDto getBunchById(long id);
 }

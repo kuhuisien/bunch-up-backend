@@ -9,6 +9,7 @@ import com.springboot.bunch.service.BunchService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +33,8 @@ public class BunchServiceImpl implements BunchService {
     }
 
     @Override
-    public BunchResponse getAllPosts(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+    public BunchResponse getAllPosts(int pageNo, int pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         Page<Bunch> bunches = bunchRepository.findAll(pageable);
 
