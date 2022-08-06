@@ -1,6 +1,7 @@
 package com.springboot.bunch.controller;
 
 import com.springboot.bunch.payload.BunchDto;
+import com.springboot.bunch.payload.BunchResponse;
 import com.springboot.bunch.service.BunchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class BunchController {
     }
 
     @GetMapping
-    public List<BunchDto> getAllBunches(
+    public BunchResponse getAllBunches(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
     ) {

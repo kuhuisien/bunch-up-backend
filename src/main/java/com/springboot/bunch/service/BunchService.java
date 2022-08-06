@@ -1,13 +1,13 @@
 package com.springboot.bunch.service;
 
 import com.springboot.bunch.payload.BunchDto;
+import com.springboot.bunch.payload.BunchResponse;
 
-import java.util.List;
 
 public interface BunchService {
     BunchDto createBunch(BunchDto bunchDto);
 
-    List<BunchDto> getAllPosts(int pageNo, int pageSize);
+    BunchResponse getAllPosts(int pageNo, int pageSize);
 
     BunchDto getBunchById(long id);
 }
