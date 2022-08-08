@@ -68,12 +68,10 @@ public class BunchServiceImpl implements BunchService {
     }
 
     private BunchDto mapEntityToDto(Bunch bunch) {
-        BunchDto bunchDto = mapper.map(bunch, BunchDto.class); //new BunchDto();
-        return  bunchDto;
+        return mapper.map(bunch, BunchDto.class);
     }
 
     private Bunch mapDtoToEntity(BunchDto bunchDto) {
-        Bunch bunch =  mapper.map(bunchDto, Bunch.class);//new Bunch();
-        return  bunch;
+        return mapper.map(bunchDto, Bunch.class);
     }
 }
