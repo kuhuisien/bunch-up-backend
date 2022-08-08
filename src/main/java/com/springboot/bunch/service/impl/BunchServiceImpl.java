@@ -6,6 +6,7 @@ import com.springboot.bunch.payload.BunchDto;
 import com.springboot.bunch.payload.BunchResponse;
 import com.springboot.bunch.repository.BunchRepository;
 import com.springboot.bunch.service.BunchService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +20,11 @@ import java.util.stream.Collectors;
 public class BunchServiceImpl implements BunchService {
     private BunchRepository bunchRepository;
 
-    public BunchServiceImpl(BunchRepository bunchRepository) {
+    private ModelMapper mapper;
+
+    public BunchServiceImpl(BunchRepository bunchRepository,ModelMapper mapper) {
         this.bunchRepository = bunchRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -64,25 +68,12 @@ public class BunchServiceImpl implements BunchService {
     }
 
     private BunchDto mapEntityToDto(Bunch bunch) {
-        BunchDto bunchDto = new BunchDto();
-        bunchDto.setId(bunch.getId());
-        bunchDto.setTitle(bunch.getTitle());
-        bunchDto.setSubtitle(bunch.getSubtitle());
-        bunchDto.setDescription(bunch.getDescription());
-        bunchDto.setImageUrl(bunch.getImageUrl());
-        bunchDto.setEmail(bunch.getEmail());
-        bunchDto.setAddress(bunch.getAddress());
+        BunchDto bunchDto = mapper.map(bunch, BunchDto.class); //new BunchDto();
         return  bunchDto;
     }
 
     private Bunch mapDtoToEntity(BunchDto bunchDto) {
-        Bunch bunch = new Bunch();
-        bunch.setTitle(bunchDto.getTitle());
-        bunch.setSubtitle(bunchDto.getSubtitle());
-        bunch.setDescription(bunchDto.getDescription());
-        bunch.setImageUrl(bunchDto.getImageUrl());
-        bunch.setEmail(bunchDto.getEmail());
-        bunch.setAddress(bunchDto.getAddress());
+        Bunch bunch =  mapper.map(bunchDto, Bunch.class);//new Bunch();
         return  bunch;
     }
 }
