@@ -3,9 +3,7 @@ package com.springboot.bunch.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="bunches", uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})})
-public class Bunch {
+public class Bunch extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,9 +37,4 @@ public class Bunch {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    
 }
