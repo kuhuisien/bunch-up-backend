@@ -34,5 +34,9 @@ public class Bunch {
 
     @Column(name = "email", nullable = false)
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     
 }

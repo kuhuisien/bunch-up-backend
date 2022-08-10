@@ -28,6 +28,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetail, HttpStatus.NOT_FOUND);
     }
 
+    // handle specific exception
+    @ExceptionHandler(BunchAPIException.class)
+    public ResponseEntity<ErrorDetail> handleBunchAPIException(
+            BunchAPIException exception, WebRequest webRequest
+    ) {
+        ErrorDetail errorDetail = new ErrorDetail(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+    }
+
     // handle global exception
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetail> handleGlobalException(

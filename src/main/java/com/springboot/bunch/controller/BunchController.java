@@ -6,10 +6,9 @@ import com.springboot.bunch.service.BunchService;
 import com.springboot.bunch.utils.AppConstant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/bunches")
@@ -22,8 +21,10 @@ public class BunchController {
     }
 
     @PostMapping
-    public ResponseEntity<BunchDto> createBunch(@Valid @RequestBody BunchDto bunchDto) {
-        return new ResponseEntity<>(bunchService.createBunch(bunchDto), HttpStatus.CREATED);
+    public ResponseEntity<BunchDto> createBunch(Authentication authentication,
+                                                @Valid @RequestBody BunchDto bunchDto) {
+        return new ResponseEntity<>(bunchService.createBunch(bunchDto,
+                authentication.getName()), HttpStatus.CREATED);
     }
 
     @GetMapping
