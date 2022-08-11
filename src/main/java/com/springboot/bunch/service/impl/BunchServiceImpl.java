@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,6 +80,22 @@ public class BunchServiceImpl implements BunchService {
     public BunchDto getBunchById(long id) {
         Bunch bunch = bunchRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Bunch", "id", id));
         return mapEntityToDto(bunch);
+    }
+
+    @Override
+    public void favouriteBunch(long id, String usernameOrEmail) {
+        User user =  userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+                .orElseThrow( () ->
+                        new BunchAPIException(HttpStatus.BAD_REQUEST, "user error")
+                );
+
+        Bunch bunch = bunchRepository.
+                findById(id).orElseThrow(() -> new ResourceNotFoundException("Bunch", "id", id));
+
+        Set<Bunch> bunchSet = user.getFavouriteBunches();
+        bunchSet.add(bunch);
+        user.setFavouriteBunches(bunchSet);
+        userRepository.save(user);
     }
 
     private BunchDto mapEntityToDto(Bunch bunch) {

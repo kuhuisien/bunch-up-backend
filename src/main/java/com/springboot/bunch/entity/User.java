@@ -25,4 +25,11 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "user")
     private Set<Bunch> createdBunches;
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(
+            name = "bunch_favourite",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "bunch_id"))
+    Set<Bunch> favouriteBunches;
 }

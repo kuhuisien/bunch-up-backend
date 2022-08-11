@@ -10,4 +10,6 @@ public interface BunchService {
     BunchResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir);
 
     BunchDto getBunchById(long id);
+
+    void favouriteBunch(long id, String usernameOrEmail);
 }
