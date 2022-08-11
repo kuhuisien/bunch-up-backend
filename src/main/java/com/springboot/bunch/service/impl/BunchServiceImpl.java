@@ -93,6 +93,10 @@ public class BunchServiceImpl implements BunchService {
                 findById(id).orElseThrow(() -> new ResourceNotFoundException("Bunch", "id", id));
 
         Set<Bunch> bunchSet = user.getFavouriteBunches();
+        if (bunchSet.contains((bunch))) {
+            throw new BunchAPIException(HttpStatus.BAD_REQUEST, "user already favourited this bunch before");
+        }
+
         bunchSet.add(bunch);
         user.setFavouriteBunches(bunchSet);
         userRepository.save(user);
