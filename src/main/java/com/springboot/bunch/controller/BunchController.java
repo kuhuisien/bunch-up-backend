@@ -43,12 +43,14 @@ public class BunchController {
 
     @GetMapping
     public BunchResponse getAllBunches(
+            Authentication authentication,
             @RequestParam(value = "pageNo", defaultValue = AppConstant.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstant.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstant.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstant.DEFAULT_SORT_DIRECTION, required = false) String sortDir
     ) {
-        return  bunchService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
+        String usernameOrEmail = authentication != null ? authentication.getName() : null;
+        return  bunchService.getAllPosts(pageNo, pageSize, sortBy, sortDir, usernameOrEmail);
     }
 
     @GetMapping("/{id}")

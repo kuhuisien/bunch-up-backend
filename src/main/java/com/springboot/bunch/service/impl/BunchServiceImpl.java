@@ -6,6 +6,7 @@ import com.springboot.bunch.exception.BunchAPIException;
 import com.springboot.bunch.exception.ResourceNotFoundException;
 import com.springboot.bunch.payload.BunchDto;
 import com.springboot.bunch.payload.BunchResponse;
+import com.springboot.bunch.payload.PersonalBunchDto;
 import com.springboot.bunch.repository.BunchRepository;
 import com.springboot.bunch.repository.UserRepository;
 import com.springboot.bunch.service.BunchService;
@@ -17,7 +18,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,7 +55,8 @@ public class BunchServiceImpl implements BunchService {
     }
 
     @Override
-    public BunchResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+    public BunchResponse getAllPosts(int pageNo, int pageSize, String sortBy,
+                                     String sortDir, String usernameOrEmail) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
@@ -62,8 +66,23 @@ public class BunchServiceImpl implements BunchService {
 
         List<Bunch> listOfBunches = bunches.getContent();
 
-        List<BunchDto> content = listOfBunches.stream()
-                .map(bunch -> mapEntityToDto(bunch)).collect(Collectors.toList());
+        // determine if caller is valid logged in user
+        Optional<User> user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+        List<PersonalBunchDto>  content;
+        // for logged-in user, return information if the bunch is user favourite bunch
+        if (user.isPresent()) {
+            Set<Bunch> favouriteBunches = user.get().getFavouriteBunches();
+            content = listOfBunches.stream().map((bunch) -> {
+                boolean isFavourite = favouriteBunches.contains(bunch);
+                return mapEntityToPersonalDto(bunch, isFavourite);
+            }).collect(Collectors.toList());
+        }
+        // for non-logged-in user, always return default value of 'false' for 'favourite' field
+        else {
+            content = listOfBunches.stream().map(bunch -> {
+                return mapEntityToPersonalDto(bunch, false);
+            }).collect(Collectors.toList());
+        }
 
         BunchResponse bunchResponse = new BunchResponse();
         bunchResponse.setContent(content);
@@ -130,5 +149,11 @@ public class BunchServiceImpl implements BunchService {
         Bunch bunch = mapper.map(bunchDto, Bunch.class);
         bunch.setUser(user);
         return bunch;
+    }
+
+    private PersonalBunchDto mapEntityToPersonalDto(Bunch bunch, boolean isFavourite) {
+        PersonalBunchDto personalBunchDto = mapper.map(bunch, PersonalBunchDto.class);
+        personalBunchDto.setFavourite(isFavourite);
+        return personalBunchDto;
     }
 }

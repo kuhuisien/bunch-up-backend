@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BunchResponse {
-    private List<BunchDto> content;
+    private List<PersonalBunchDto> content;
     private int pageNo;
     private int pageSize;
     private long totalElements;

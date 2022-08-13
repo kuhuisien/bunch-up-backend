@@ -1,6 +1,7 @@
 package com.springboot.bunch.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,22 +30,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = getJWTFromRequest(request);
 
         // validate token
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
-            // get username from token
-            String username = jwtTokenProvider.getUsernameFromJwt(token);
+        if (StringUtils.hasText(token)) {
+            try {
+                jwtTokenProvider.validateToken(token);
 
-            // load user associated with token
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                // get username from token
+                String username = jwtTokenProvider.getUsernameFromJwt(token);
 
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities()
-                    );
+                // load user associated with token
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities()
+                        );
 
-            // set spring security
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // set spring security
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            } catch (Exception e) {
+                String method = request.getMethod();
+
+                // for endpoints not with GET method, throw exception to return error response
+                // GET endpoint current behaviour:
+                // logged in: returns response with personal field info
+                // non-logged-in or expired-logged in: return response without personal field info
+                if (!method.equals(String.valueOf(HttpMethod.GET))) {
+                    throw e;
+                }
+            }
         }
 
         filterChain.doFilter(request, response);
