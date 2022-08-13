@@ -102,6 +102,26 @@ public class BunchServiceImpl implements BunchService {
         userRepository.save(user);
     }
 
+    @Override
+    public void unfavouriteBunch(long id, String usernameOrEmail) {
+        User user =  userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+                .orElseThrow( () ->
+                        new BunchAPIException(HttpStatus.BAD_REQUEST, "user error")
+                );
+
+        Bunch bunch = bunchRepository.
+                findById(id).orElseThrow(() -> new ResourceNotFoundException("Bunch", "id", id));
+
+        Set<Bunch> bunchSet = user.getFavouriteBunches();
+        if (!bunchSet.contains((bunch))) {
+            throw new BunchAPIException(HttpStatus.BAD_REQUEST, "user has not favourited this bunch before");
+        }
+
+        bunchSet.remove(bunch);
+        user.setFavouriteBunches(bunchSet);
+        userRepository.save(user);
+    }
+
     private BunchDto mapEntityToDto(Bunch bunch) {
         return mapper.map(bunch, BunchDto.class);
     }

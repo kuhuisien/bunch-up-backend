@@ -12,4 +12,6 @@ public interface BunchService {
     BunchDto getBunchById(long id);
 
     void favouriteBunch(long id, String usernameOrEmail);
+
+    void unfavouriteBunch(long id, String usernameOrEmail);
 }

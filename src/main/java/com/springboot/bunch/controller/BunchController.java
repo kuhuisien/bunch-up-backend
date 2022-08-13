@@ -34,6 +34,13 @@ public class BunchController {
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}/favourites")
+    public ResponseEntity<String> unfavouriteBunch(Authentication authentication,
+                                                 @PathVariable(name = "id") long id) {
+        bunchService.unfavouriteBunch(id, authentication.getName());
+        return new ResponseEntity<>("Success", HttpStatus.OK);
+    }
+
     @GetMapping
     public BunchResponse getAllBunches(
             @RequestParam(value = "pageNo", defaultValue = AppConstant.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
