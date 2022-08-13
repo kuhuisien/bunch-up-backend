@@ -4,6 +4,7 @@ import com.springboot.bunch.payload.BunchDto;
 import com.springboot.bunch.payload.BunchResponse;
 import com.springboot.bunch.service.BunchService;
 import com.springboot.bunch.utils.AppConstant;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,7 @@ public class BunchController {
         this.bunchService = bunchService;
     }
 
+    @Operation(summary = "Create Bunch")
     @PostMapping
     public ResponseEntity<BunchDto> createBunch(Authentication authentication,
                                                 @Valid @RequestBody BunchDto bunchDto) {
@@ -27,6 +29,7 @@ public class BunchController {
                 authentication.getName()), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Favourite Bunch by Id")
     @PutMapping("/{id}/favourites")
     public ResponseEntity<String> favouriteBunch(Authentication authentication,
                                                  @PathVariable(name = "id") long id) {
@@ -34,6 +37,7 @@ public class BunchController {
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
+    @Operation(summary = "Unfavourite Bunch by Id")
     @DeleteMapping("/{id}/favourites")
     public ResponseEntity<String> unfavouriteBunch(Authentication authentication,
                                                  @PathVariable(name = "id") long id) {
@@ -41,6 +45,9 @@ public class BunchController {
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
+    @Operation(summary = "Get All Bunches",
+            description = "For logged-in user, favourite response field indicates if bunch is user favourite. " +
+                    "For non-logged-in user, favourite response field is always 'false'.")
     @GetMapping
     public BunchResponse getAllBunches(
             Authentication authentication,
@@ -53,6 +60,7 @@ public class BunchController {
         return  bunchService.getAllPosts(pageNo, pageSize, sortBy, sortDir, usernameOrEmail);
     }
 
+    @Operation(summary = "Get Bunch by Id")
     @GetMapping("/{id}")
     public ResponseEntity<BunchDto> getBunchById(@PathVariable(name = "id") long id) {
         return ResponseEntity.ok(bunchService.getBunchById(id));

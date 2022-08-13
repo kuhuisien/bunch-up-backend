@@ -6,6 +6,7 @@ import com.springboot.bunch.payload.LoginDto;
 import com.springboot.bunch.payload.SignupDto;
 import com.springboot.bunch.repository.UserRepository;
 import com.springboot.bunch.security.JwtTokenProvider;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,7 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Operation(summary = "Signin user to Bunch app")
     @PostMapping("/signin")
     public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager
@@ -49,6 +51,7 @@ public class AuthController {
         return ResponseEntity.ok(new JWTAuthResponse(token));
     }
 
+    @Operation(summary = "Signup user to Bunch app")
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupDto signupDto) {
         // check if username already exists in db
