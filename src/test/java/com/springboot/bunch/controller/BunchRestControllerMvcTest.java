@@ -1,4 +1,4 @@
-package com.springboot.bunch;
+package com.springboot.bunch.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
