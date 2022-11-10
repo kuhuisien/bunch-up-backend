@@ -1,8 +1,12 @@
 package com.springboot.bunch.payload;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class PersonalBunchDto extends BunchDto{
     private boolean favourite;
 }
