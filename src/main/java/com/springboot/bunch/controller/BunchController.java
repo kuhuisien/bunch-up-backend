@@ -57,7 +57,7 @@ public class BunchController {
             @RequestParam(value = "sortDir", defaultValue = AppConstant.DEFAULT_SORT_DIRECTION, required = false) String sortDir
     ) {
         String usernameOrEmail = authentication != null ? authentication.getName() : null;
-        return  bunchService.getAllPosts(pageNo, pageSize, sortBy, sortDir, usernameOrEmail);
+        return  bunchService.getAllBunches(pageNo, pageSize, sortBy, sortDir, usernameOrEmail);
     }
 
     @Operation(summary = "Get Bunch by Id")

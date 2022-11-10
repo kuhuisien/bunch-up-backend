@@ -18,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -55,8 +54,8 @@ public class BunchServiceImpl implements BunchService {
     }
 
     @Override
-    public BunchResponse getAllPosts(int pageNo, int pageSize, String sortBy,
-                                     String sortDir, String usernameOrEmail) {
+    public BunchResponse getAllBunches(int pageNo, int pageSize, String sortBy,
+                                       String sortDir, String usernameOrEmail) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
