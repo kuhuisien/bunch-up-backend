@@ -4,6 +4,7 @@ import com.springboot.bunch.payload.ErrorDetail;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,6 +37,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDetail errorDetail = new ErrorDetail(new Date(), exception.getMessage(),
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+    }
+
+    // handle specific exception
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorDetail> handleBadCredentialsException(
+            BadCredentialsException exception, WebRequest webRequest
+    ) {
+        ErrorDetail errorDetail = new ErrorDetail(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetail, HttpStatus.UNAUTHORIZED);
     }
 
     // handle global exception
